@@ -18,6 +18,21 @@
 
 
 /*************************< Functions ****************************/
+#define	DATA_5bits							5
+#define DATA_6bits		                    6
+#define DATA_7bits							7
+#define DATA_8bits							8
+
+#define UART_BDR_4800				        4800
+#define UART_BDR_9600					    9600
+#define UART_BDR_57600				        57600
+
+#define UART_PARITY_NONE				    0
+#define UART_PARITY_ODD					    1
+#define UART_PARITY_EVEN				    2
+
+#define STOP_1bit						    1
+#define STOP_2bit							2
 
 /**
  * @brief   This function UART_Init initializes a UART (Universal Asynchronous Receiver/Transmitter) 
