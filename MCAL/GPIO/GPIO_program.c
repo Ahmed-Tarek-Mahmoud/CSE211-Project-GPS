@@ -64,50 +64,50 @@ void GPIO_SetPinDirection (uint8_t PortId, uint8_t PinId,uint8_t PinDirection){
 	switch (PortId){
 		case GPIO_PORTA:
 			if (PinDirection==1){
-				GPTO_PORTA_DIR_R |= (1<<PinId);
+				GPIO_PORTA_DIR_R |= (1<<PinId);
 			}	
 			else if (PinDirection==0){
-				GPTO_PORTA_DIR_R &= ~(1<<PinId);
+				GPIO_PORTA_DIR_R &= ~(1<<PinId);
 			}
 			break;
 		case GPIO_PORTB:
 			if (PinDirection==1){
-				GPTO_PORTB_DIR_R |= (1<<PinId);
+				GPIO_PORTB_DIR_R |= (1<<PinId);
 			}	
 			else if (PinDirection==0){
-				GPTO_PORTB_DIR_R &= ~(1<<PinId);
+				GPIO_PORTB_DIR_R &= ~(1<<PinId);
 			}
 			break;
 		case GPIO_PORTC:
 			if (PinDirection==1){
-				GPTO_PORTC_DIR_R |= (1<<PinId);
+				GPIO_PORTC_DIR_R |= (1<<PinId);
 			}	
 			else if (PinDirection==0){
-				GPTO_PORTC_DIR_R &= ~(1<<PinId);
+				GPIO_PORTC_DIR_R &= ~(1<<PinId);
 			}
 			break;
 		case GPIO_PORTD:
 			if (PinDirection==1){
-				GPTO_PORTD_DIR_R |= (1<<PinId);
+				GPIO_PORTD_DIR_R |= (1<<PinId);
 			}	
 			else if (PinDirection==0){
-				GPTO_PORTD_DIR_R &= ~(1<<PinId);
+				GPIO_PORTD_DIR_R &= ~(1<<PinId);
 			}
 			break;
 		case GPIO_PORTE:
 			if (PinDirection==1){
-				GPTO_PORTE_DIR_R |= (1<<PinId);
+				GPIO_PORTE_DIR_R |= (1<<PinId);
 			}	
 			else if (PinDirection==0){
-				GPTO_PORTE_DIR_R &= ~(1<<PinId);
+				GPIO_PORTE_DIR_R &= ~(1<<PinId);
 			}
 			break;
 		case GPIO_PORTF:
 			if (PinDirection==1){
-				GPTO_PORTF_DIR_R |= (1<<PinId);
+				GPIO_PORTF_DIR_R |= (1<<PinId);
 			}	
 			else if (PinDirection==0){
-				GPTO_PORTF_DIR_R &= ~(1<<PinId);
+				GPIO_PORTF_DIR_R &= ~(1<<PinId);
 			}
 			break;
 	}
