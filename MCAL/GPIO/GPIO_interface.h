@@ -1,4 +1,3 @@
-
 #ifndef GPIO_INTERFACE_H
 #define GPIO_INTERFACE_H 
 
@@ -38,19 +37,19 @@
  * @brief this function will initialize the passed port as digital input output
 */
 
-void GPIO_Init(uint8_t PortID);
+void GPIO_Init(uint8_t PortId);
 
 /**
  * @brief this function will set the direction of the passed pin in the passed port (digital input or digital output)
 */
 
-void GPIO_SetPinDirection (uint8_t PortId, uint8_t PinId,uint8_t PinDirection);
+void GPIO_SetPinDirection (uint8_t PortId, uint8_t PinId, uint8_t PinDirection);
 
 /**
  * @brief this function sets the passed pin value in passed port 
 */
 
-void GPIO_SetPinValue(uint8_t PortId, uint8_t PinId);
+void GPIO_SetPinValue(uint8_t PortId, uint8_t PinId, uint8_t PinValue);
 
 /**
  * this function gets the pin value of the passed pin in the passed port and assigns the value at the given address

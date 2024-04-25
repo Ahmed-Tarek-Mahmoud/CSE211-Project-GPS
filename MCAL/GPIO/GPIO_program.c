@@ -4,10 +4,10 @@
 
 #include "tm4c123gh6pm.h"
 
-void GPIO_Init(uint8_t PortID){
-	SYSCTL_RCGCGPIO_R |= (1<<PortID);
-	while((SYSCTL_PRGPIO_R & (1<<PortID))==0);
-	switch(PortID){
+void GPIO_Init(uint8_t PortId){
+	SYSCTL_RCGCGPIO_R |= (1<<PortId);
+	while((SYSCTL_PRGPIO_R & (1<<PortId))==0);
+	switch(PortId){
 		case GPIO_PORTA:
 			GPIO_PROTA_LOCK_R = 0x4C4F434B;
 			GPIO_PORTA_CR_R = 0xFF;
@@ -26,12 +26,12 @@ void GPIO_Init(uint8_t PortID){
 			break;
 		//risky port
 		case GPIO_PORTC:
-			GPIO_PROTC_LOCK_R = 0x4C4F434B;
-			GPIO_PORTC_CR_R = 0xFF;
-			GPIO_PORTC_AFSEL_R = 0x00;
-			GPIO_PORTC_PCTL_R = 0x00000000;
-			GPIO_PORTC_AMSEL_R=0x00;
-			GPIO_PORTC_DEN_R=0xFF;
+			// GPIO_PROTC_LOCK_R = 0x4C4F434B;
+			// GPIO_PORTC_CR_R = 0xFF;
+			// GPIO_PORTC_AFSEL_R = 0x00;
+			// GPIO_PORTC_PCTL_R = 0x00000000;
+			// GPIO_PORTC_AMSEL_R=0x00;
+			// GPIO_PORTC_DEN_R=0xFF;
 			break;
 		case GPIO_PORTD:
 			GPIO_PROTD_LOCK_R = 0x4C4F434B;
@@ -61,55 +61,135 @@ void GPIO_Init(uint8_t PortID){
 }
 
 void GPIO_SetPinDirection (uint8_t PortId, uint8_t PinId,uint8_t PinDirection){
-	switch (PortID){
+	switch (PortId){
 		case GPIO_PORTA:
 			if (PinDirection==1){
-				GPTO_PORTA_DIR_R |= (1<<PinID);
+				GPTO_PORTA_DIR_R |= (1<<PinId);
 			}	
 			else if (PinDirection==0){
-				GPTO_PORTA_DIR_R &= ~(1<<PinID);
+				GPTO_PORTA_DIR_R &= ~(1<<PinId);
 			}
 			break;
 		case GPIO_PORTB:
 			if (PinDirection==1){
-				GPTO_PORTB_DIR_R |= (1<<PinID);
+				GPTO_PORTB_DIR_R |= (1<<PinId);
 			}	
 			else if (PinDirection==0){
-				GPTO_PORTB_DIR_R &= ~(1<<PinID);
+				GPTO_PORTB_DIR_R &= ~(1<<PinId);
 			}
 			break;
 		case GPIO_PORTC:
 			if (PinDirection==1){
-				GPTO_PORTC_DIR_R |= (1<<PinID);
+				GPTO_PORTC_DIR_R |= (1<<PinId);
 			}	
 			else if (PinDirection==0){
-				GPTO_PORTC_DIR_R &= ~(1<<PinID);
+				GPTO_PORTC_DIR_R &= ~(1<<PinId);
 			}
 			break;
 		case GPIO_PORTD:
 			if (PinDirection==1){
-				GPTO_PORTD_DIR_R |= (1<<PinID);
+				GPTO_PORTD_DIR_R |= (1<<PinId);
 			}	
 			else if (PinDirection==0){
-				GPTO_PORTD_DIR_R &= ~(1<<PinID);
+				GPTO_PORTD_DIR_R &= ~(1<<PinId);
 			}
 			break;
 		case GPIO_PORTE:
 			if (PinDirection==1){
-				GPTO_PORTE_DIR_R |= (1<<PinID);
+				GPTO_PORTE_DIR_R |= (1<<PinId);
 			}	
 			else if (PinDirection==0){
-				GPTO_PORTE_DIR_R &= ~(1<<PinID);
+				GPTO_PORTE_DIR_R &= ~(1<<PinId);
 			}
 			break;
 		case GPIO_PORTF:
 			if (PinDirection==1){
-				GPTO_PORTF_DIR_R |= (1<<PinID);
+				GPTO_PORTF_DIR_R |= (1<<PinId);
 			}	
 			else if (PinDirection==0){
-				GPTO_PORTF_DIR_R &= ~(1<<PinID);
+				GPTO_PORTF_DIR_R &= ~(1<<PinId);
 			}
 			break;
 	}
+
 }
+
+void GPIO_SetPinValue(uint8_t PortId, uint8_t PinId, uint8_t PinValue){
+	switch(PortId){
+		case GPIO_PORTA:
+            if (PinValue==1){
+                GPIO_PORTA_DATA_R |= (1<<PinId);
+            }
+            else if (PinValue==0){
+                GPIO_PORTA_DATA_R &= ~(1<<PinId);
+            }
+            break;
+		case GPIO_PORTB:
+            if (PinValue==1){
+                GPIO_PORTB_DATA_R |= (1<<PinId);
+            }
+            else if (PinValue==0){
+                GPIO_PORTB_DATA_R &= ~(1<<PinId);
+            }
+            break;
+		case GPIO_PORTC:
+            if (PinValue==1){
+                GPIO_PORTC_DATA_R |= (1<<PinId);
+            }
+            else if (PinValue==0){
+                GPIO_PORTC_DATA_R &= ~(1<<PinId);
+            }
+            break;
+		case GPIO_PORTD:
+            if (PinValue==1){
+                GPIO_PORTD_DATA_R |= (1<<PinId);
+            }
+            else if (PinValue==0){
+                GPIO_PORTD_DATA_R &= ~(1<<PinId);
+            }
+            break;
+		case GPIO_PORTE:
+            if (PinValue==1){
+                GPIO_PORTE_DATA_R |= (1<<PinId);
+            }
+            else if (PinValue==0){
+                GPIO_PORTE_DATA_R &= ~(1<<PinId);
+            }
+            break;
+		case GPIO_PORTF:
+            if (PinValue==1){
+                GPIO_PORTF_DATA_R |= (1<<PinId);
+            }
+            else if (PinValue==0){
+                GPIO_PORTF_DATA_R &= ~(1<<PinId);
+            }
+            break;
+	}
+
+}
+
+void GPIO_GetPinValue(uint8_t PortId, uint8_t PinId, uint8_t *ReturnedValue){
+	switch(PortId){
+		case GPIO_PORTA:
+             *ReturnedValue = GPIO_PORTA_DATA_R & (1<<PinId);
+            break;
+		case GPIO_PORTB:
+             *ReturnedValue = GPIO_PORTB_DATA_R & (1<<PinId);
+            break;
+		case GPIO_PORTC:
+             *ReturnedValue = GPIO_PORTC_DATA_R & (1<<PinId);
+            break;
+		case GPIO_PORTD:
+             *ReturnedValue = GPIO_PORTD_DATA_R & (1<<PinId);
+            break;
+		case GPIO_PORTE:
+             *ReturnedValue = GPIO_PORTE_DATA_R & (1<<PinId);
+            break;
+		case GPIO_PORTF:
+             *ReturnedValue = GPIO_PORTF_DATA_R & (1<<PinId);
+            break;
+		
+	}
+}
+
 	
