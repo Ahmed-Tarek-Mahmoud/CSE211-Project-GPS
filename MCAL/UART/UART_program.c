@@ -4,8 +4,6 @@
 
 #include "tm4c123gh6pm.h"
 
-void clear_bit(uint32_t REGISTER ,uint8_t BIT_NO);
-void set_bit(uint32_t REGISTER ,uint8_t BIT_NO);
 
 void UART_Init(uint8_t UARTNo,uint32_t BaudRate, uint8_t DataBits, uint8_t Parity, uint8_t StopBits){
         set_bit(SYSCTL_RCGCUART_R,UARTNo);
@@ -36,7 +34,7 @@ void UART_Init(uint8_t UARTNo,uint32_t BaudRate, uint8_t DataBits, uint8_t Parit
 					else if(DataBits==DATA_8bits){
 						UART0_LCRH_R |=  (0x60);	//set bit 5,6
 					}
-					//parity 0-->none  1-->odd  2-->even	
+					//parity 0-->none  1-->odd  2-->even
 					if(Parity==UART_PARITY_NONE)
 						clear_bit(UART0_LCRH_R,1);
 					else if(Parity==UART_PARITY_ODD){             		//odd
@@ -54,7 +52,7 @@ void UART_Init(uint8_t UARTNo,uint32_t BaudRate, uint8_t DataBits, uint8_t Parit
 						set_bit(UART0_LCRH_R,3);
 					UART0_CTL_R |= 0x0301;
 					break;
-///////////////////////////////////////// UART1 /////////////////////////////////////////					
+///////////////////////////////////////// UART1 /////////////////////////////////////////
 		case UART1:
 					SYSCTL_RCGCGPIO_R |=0x04;
 					while(!(SYSCTL_PRGPIO_R & 0x04));
@@ -80,7 +78,7 @@ void UART_Init(uint8_t UARTNo,uint32_t BaudRate, uint8_t DataBits, uint8_t Parit
 					else if(DataBits==DATA_8bits){
 						UART1_LCRH_R |=  (0x60);	//set bit 5,6
 					}
-					//parity 0-->none  1-->odd  2-->even	
+					//parity 0-->none  1-->odd  2-->even
 					if(Parity==UART_PARITY_NONE)
 						clear_bit(UART1_LCRH_R,1);
 					else if(Parity==UART_PARITY_ODD){             	//odd
@@ -98,13 +96,145 @@ void UART_Init(uint8_t UARTNo,uint32_t BaudRate, uint8_t DataBits, uint8_t Parit
 						set_bit(UART1_LCRH_R,3);
 					UART1_CTL_R |= 0x0301;
 					break;
+///////////////////////////////////////// UART2 /////////////////////////////////////////
+		case UART2:
+					SYSCTL_RCGCGPIO_R |=0x08;
+					while(!(SYSCTL_PRGPIO_R & 0x08));
+					GPIO_PORTD_AFSEL_R |= 0xC0;
+					GPIO_PORTD_PCTL_R =(GPIO_PORTD_PCTL_R&0x00FFFFFF) + 0x11000000;
+					GPIO_PORTD_DEN_R |= 0xC0;
+					GPIO_PORTD_AMSEL_R &= ~(0xC0);
+					UART2_CTL_R &= ~(0x0001);
+					UART2_IBRD_R = (uint32_t)( UART_CLOCK / (BaudRate * 16));
+					UART2_FBRD_R = (uint32_t)(((UART_CLOCK / (BaudRate * 16))-((uint32_t)(UART_CLOCK / (BaudRate * 16))))*64+0.5);
+					UART2_LCRH_R |=0x10;
+					if(DataBits==DATA_5bits){
+						UART2_LCRH_R &= ~(0x60);                    //clear bit 5,6
+					}
+					else if(DataBits==DATA_6bits){
+						UART2_LCRH_R &= ~(0x40);                    //clear bit 6
+						UART2_LCRH_R |=  (0x20);                    //set bit 5
+					}
+					else if(DataBits==DATA_7bits){
+						UART2_LCRH_R &= ~(0x20);	                //clear bit 5
+						UART2_LCRH_R |=  (0x40);	                //set bit 6
+					}
+					else if(DataBits==DATA_8bits){
+						UART2_LCRH_R |=  (0x60);	                //set bit 5,6
+					}
+					//parity 0-->none  1-->odd  2-->even
+					if(Parity==UART_PARITY_NONE)
+						clear_bit(UART2_LCRH_R,1);
+					else if(Parity==UART_PARITY_ODD){             	//odd
+						set_bit(UART2_LCRH_R,1);
+						clear_bit(UART2_LCRH_R,2);
+					}
+					else if(Parity==UART_PARITY_EVEN){				//even
+						set_bit(UART2_LCRH_R,1);
+						set_bit(UART2_LCRH_R,2);
+					}
+					//stop bits
+					if(StopBits==STOP_1bit)
+						clear_bit(UART2_LCRH_R,3);
+					else if(StopBits==STOP_2bit)
+						set_bit(UART2_LCRH_R,3);
+					UART2_CTL_R |= 0x0301;
+					break;
+///////////////////////////////////////// UART3 /////////////////////////////////////////
+		case UART3:
+					SYSCTL_RCGCGPIO_R |=0x04;
+					while(!(SYSCTL_PRGPIO_R & 0x04));
+					GPIO_PORTC_AFSEL_R |= 0xC0;
+					GPIO_PORTC_PCTL_R =(GPIO_PORTA_PCTL_R&0x00FFFFFF) + 0x11000000;
+					GPIO_PORTC_DEN_R |= 0xC0;
+					GPIO_PORTC_AMSEL_R &= ~(0xC0);
+					UART3_CTL_R &= ~(0x0001);
+					UART3_IBRD_R = (uint32_t)( UART_CLOCK / (BaudRate * 16));
+					UART3_FBRD_R = (uint32_t)(((UART_CLOCK / (BaudRate * 16))-((uint32_t)(UART_CLOCK / (BaudRate * 16))))*64+0.5);
+					UART3_LCRH_R |=0x10;
+					if(DataBits==DATA_5bits){
+						UART3_LCRH_R &= ~(0x60);                    //clear bit 5,6
+					}
+					else if(DataBits==DATA_6bits){
+						UART3_LCRH_R &= ~(0x40);                    //clear bit 6
+						UART3_LCRH_R |=  (0x20);                    //set bit 5
+					}
+					else if(DataBits==DATA_7bits){
+						UART3_LCRH_R &= ~(0x20);	                //clear bit 5
+						UART3_LCRH_R |=  (0x40);	                //set bit 6
+					}
+					else if(DataBits==DATA_8bits){
+						UART3_LCRH_R |=  (0x60);	                //set bit 5,6
+					}
+					//parity 0-->none  1-->odd  2-->even
+					if(Parity==UART_PARITY_NONE)
+						clear_bit(UART3_LCRH_R,1);
+					else if(Parity==UART_PARITY_ODD){             	//odd
+						set_bit(UART3_LCRH_R,1);
+						clear_bit(UART3_LCRH_R,2);
+					}
+					else if(Parity==UART_PARITY_EVEN){				//even
+						set_bit(UART3_LCRH_R,1);
+						set_bit(UART3_LCRH_R,2);
+					}
+					//stop bits
+					if(StopBits==STOP_1bit)
+						clear_bit(UART3_LCRH_R,3);
+					else if(StopBits==STOP_2bit)
+						set_bit(UART3_LCRH_R,3);
+					UART3_CTL_R |= 0x0301;
+					break;
+///////////////////////////////////////// UART4 /////////////////////////////////////////
+		case UART4:
+					SYSCTL_RCGCGPIO_R |=0x04;
+					while(!(SYSCTL_PRGPIO_R & 0x04));
+					GPIO_PORTC_AFSEL_R |= 0x30;
+					GPIO_PORTC_PCTL_R =(GPIO_PORTC_PCTL_R&0xFF00FFFF) + 0x00110000;
+					GPIO_PORTC_DEN_R |= 0x30;
+					GPIO_PORTC_AMSEL_R &= ~(0x30);
+					UART4_CTL_R &= ~(0x0001);
+					UART4_IBRD_R = (uint32_t)( UART_CLOCK / (BaudRate * 16));
+					UART4_FBRD_R = (uint32_t)(((UART_CLOCK / (BaudRate * 16))-((uint32_t)(UART_CLOCK / (BaudRate * 16))))*64+0.5);
+					UART4_LCRH_R |=0x10;
+					if(DataBits==DATA_5bits){
+						UART4_LCRH_R &= ~(0x60);                    //clear bit 5,6
+					}
+					else if(DataBits==DATA_6bits){
+						UART4_LCRH_R &= ~(0x40);                    //clear bit 6
+						UART4_LCRH_R |=  (0x20);                    //set bit 5
+					}
+					else if(DataBits==DATA_7bits){
+						UART4_LCRH_R &= ~(0x20);	                //clear bit 5
+						UART4_LCRH_R |=  (0x40);	                //set bit 6
+					}
+					else if(DataBits==DATA_8bits){
+						UART4_LCRH_R |=  (0x60);	                //set bit 5,6
+					}
+					//parity 0-->none  1-->odd  2-->even
+					if(Parity==UART_PARITY_NONE)
+						clear_bit(UART4_LCRH_R,1);
+					else if(Parity==UART_PARITY_ODD){             	//odd
+						set_bit(UART4_LCRH_R,1);
+						clear_bit(UART4_LCRH_R,2);
+					}
+					else if(Parity==UART_PARITY_EVEN){				//even
+						set_bit(UART4_LCRH_R,1);
+						set_bit(UART4_LCRH_R,2);
+					}
+					//stop bits
+					if(StopBits==STOP_1bit)
+						clear_bit(UART4_LCRH_R,3);
+					else if(StopBits==STOP_2bit)
+						set_bit(UART4_LCRH_R,3);
+					UART4_CTL_R |= 0x0301;
+					break;
         }
 
 }
-void set_bit(uint32_t REGISTER ,uint8_t BIT_NO){
-	REGISTER |=(1<<BIT_NO);
+void set_bit(uint32_t Register ,uint8_t Bit_No){
+	Register |=(1<<Bit_No);
 }
 
-void clear_bit(uint32_t REGISTER ,uint8_t BIT_NO){
-REGISTER &= ~(1<<BIT_NO);
+void clear_bit(uint32_t Register ,uint8_t Bit_No){
+    Register &= ~(1<<Bit_No);
 }
