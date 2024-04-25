@@ -1,11 +1,19 @@
 #ifndef UART_INTERFACE_H
 #define UART_INTERFACE_H
 
-/*******************< Macros needed *******************/
+/*******************< PortF Macros ********************/
+#define GPIO_PORTF      5
+#define PF_PIN4_PUR     0x10
+#define PF_PIN0_PUR     0x01
+#define PIN0            0
+#define PIN4            4
 
+/*******************< Direction Macros ********************/
+#define INPUT           0
 
-
-
+/*******************< Switches Macros ********************/
+#define PF_SW1          1
+#define PF_SW2          2
 
 
 /******************< Functions ***********************/
