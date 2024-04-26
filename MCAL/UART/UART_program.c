@@ -15,10 +15,12 @@ void UART_Init(uint8_t UARTNo,uint32_t BaudRate, uint8_t DataBits, uint8_t Parit
 					GPIO_PORTA_AFSEL_R |= 0x03;
 					GPIO_PORTA_PCTL_R =(GPIO_PORTA_PCTL_R&0xFFFFFF00) + 0x00000011;
 					GPIO_PORTA_DEN_R |= 0x03;
+					clear_bit(GPIO_PORTA_DIR_R,0);
+					set_bit(GPIO_PORTA_DIR_R,1);
 					GPIO_PORTA_AMSEL_R &= ~(0x03);
 					UART0_CTL_R &= ~(0x0001);
 					UART0_IBRD_R = (uint32_t)( UART_CLOCK / (BaudRate * 16));
-					UART0_FBRD_R = (uint32_t)(((UART_CLOCK / (BaudRate * 16))-((uint32_t)(UART_CLOCK / (BaudRate * 16))))*64+0.5);
+					UART0_FBRD_R = (uint32_t)(((UART_CLOCK / (BaudRate * 16.0))-((uint32_t)(UART_CLOCK / (BaudRate * 16))))*64+0.5);
 					UART0_LCRH_R |=0x10;
 					if(DataBits==DATA_5bits){
 						UART0_LCRH_R &= ~(0x60);  //clear bit 5,6
@@ -59,10 +61,12 @@ void UART_Init(uint8_t UARTNo,uint32_t BaudRate, uint8_t DataBits, uint8_t Parit
 					GPIO_PORTC_AFSEL_R |= 0x30;
 					GPIO_PORTC_PCTL_R =(GPIO_PORTC_PCTL_R&0xFF00FFFF) + 0x00220000;
 					GPIO_PORTC_DEN_R |= 0x30;
+					clear_bit(GPIO_PORTC_DIR_R,4);
+					set_bit(GPIO_PORTC_DIR_R,5);
 					GPIO_PORTC_AMSEL_R &= ~(0x30);
 					UART1_CTL_R &= ~(0x0001);
 					UART1_IBRD_R = (uint32_t)( UART_CLOCK / (BaudRate * 16));
-					UART1_FBRD_R = (uint32_t)(((UART_CLOCK / (BaudRate * 16))-((uint32_t)(UART_CLOCK / (BaudRate * 16))))*64+0.5);
+					UART1_FBRD_R = (uint32_t)(((UART_CLOCK / (BaudRate * 16.0))-((uint32_t)(UART_CLOCK / (BaudRate * 16))))*64+0.5);
 					UART1_LCRH_R |=0x10;
 					if(DataBits==DATA_5bits){
 						UART1_LCRH_R &= ~(0x60);  //clear bit 5,6
@@ -103,10 +107,12 @@ void UART_Init(uint8_t UARTNo,uint32_t BaudRate, uint8_t DataBits, uint8_t Parit
 					GPIO_PORTD_AFSEL_R |= 0xC0;
 					GPIO_PORTD_PCTL_R =(GPIO_PORTD_PCTL_R&0x00FFFFFF) + 0x11000000;
 					GPIO_PORTD_DEN_R |= 0xC0;
+					clear_bit(GPIO_PORTD_DIR_R,6);
+					set_bit(GPIO_PORTD_DIR_R,7);
 					GPIO_PORTD_AMSEL_R &= ~(0xC0);
 					UART2_CTL_R &= ~(0x0001);
 					UART2_IBRD_R = (uint32_t)( UART_CLOCK / (BaudRate * 16));
-					UART2_FBRD_R = (uint32_t)(((UART_CLOCK / (BaudRate * 16))-((uint32_t)(UART_CLOCK / (BaudRate * 16))))*64+0.5);
+					UART2_FBRD_R = (uint32_t)(((UART_CLOCK / (BaudRate * 16.0))-((uint32_t)(UART_CLOCK / (BaudRate * 16))))*64+0.5);
 					UART2_LCRH_R |=0x10;
 					if(DataBits==DATA_5bits){
 						UART2_LCRH_R &= ~(0x60);                    //clear bit 5,6
@@ -147,10 +153,12 @@ void UART_Init(uint8_t UARTNo,uint32_t BaudRate, uint8_t DataBits, uint8_t Parit
 					GPIO_PORTC_AFSEL_R |= 0xC0;
 					GPIO_PORTC_PCTL_R =(GPIO_PORTA_PCTL_R&0x00FFFFFF) + 0x11000000;
 					GPIO_PORTC_DEN_R |= 0xC0;
+					clear_bit(GPIO_PORTC_DIR_R,6);
+					set_bit(GPIO_PORTC_DIR_R,7);
 					GPIO_PORTC_AMSEL_R &= ~(0xC0);
 					UART3_CTL_R &= ~(0x0001);
 					UART3_IBRD_R = (uint32_t)( UART_CLOCK / (BaudRate * 16));
-					UART3_FBRD_R = (uint32_t)(((UART_CLOCK / (BaudRate * 16))-((uint32_t)(UART_CLOCK / (BaudRate * 16))))*64+0.5);
+					UART3_FBRD_R = (uint32_t)(((UART_CLOCK / (BaudRate * 16.0))-((uint32_t)(UART_CLOCK / (BaudRate * 16))))*64+0.5);
 					UART3_LCRH_R |=0x10;
 					if(DataBits==DATA_5bits){
 						UART3_LCRH_R &= ~(0x60);                    //clear bit 5,6
@@ -191,10 +199,12 @@ void UART_Init(uint8_t UARTNo,uint32_t BaudRate, uint8_t DataBits, uint8_t Parit
 					GPIO_PORTC_AFSEL_R |= 0x30;
 					GPIO_PORTC_PCTL_R =(GPIO_PORTC_PCTL_R&0xFF00FFFF) + 0x00110000;
 					GPIO_PORTC_DEN_R |= 0x30;
+					clear_bit(GPIO_PORTC_DIR_R,4);
+					set_bit(GPIO_PORTC_DIR_R,5);
 					GPIO_PORTC_AMSEL_R &= ~(0x30);
 					UART4_CTL_R &= ~(0x0001);
 					UART4_IBRD_R = (uint32_t)( UART_CLOCK / (BaudRate * 16));
-					UART4_FBRD_R = (uint32_t)(((UART_CLOCK / (BaudRate * 16))-((uint32_t)(UART_CLOCK / (BaudRate * 16))))*64+0.5);
+					UART4_FBRD_R = (uint32_t)(((UART_CLOCK / (BaudRate * 16.0))-((uint32_t)(UART_CLOCK / (BaudRate * 16))))*64+0.5);
 					UART4_LCRH_R |=0x10;
 					if(DataBits==DATA_5bits){
 						UART4_LCRH_R &= ~(0x60);                    //clear bit 5,6
