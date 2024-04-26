@@ -21,3 +21,24 @@ void Switch_Init(uint8_t SwitchNo)
    }
 
 }
+
+void LEDx_On(uint8_t LedColor)
+{
+    GPIO_Init(GPIO_PORTF);
+   
+   if (LedColor == RGB_RED)
+   {
+    GPIO_SetPinDirection(GPIO_PORTF,PIN1,OUTPUT);
+		GPIO_SetPinValue(GPIO_PORTF,PIN1,ON);
+   }
+   else if (LedColor == RGB_BLUE)
+   {
+     GPIO_SetPinDirection(GPIO_PORTF,PIN2,OUTPUT);
+		 GPIO_SetPinValue(GPIO_PORTF,PIN2,ON);
+   }
+	 else if(LedColor == RGB_GREEN)
+	 {
+		 GPIO_SetPinDirection(GPIO_PORTF,PIN3,OUTPUT);
+		 GPIO_SetPinValue(GPIO_PORTF,PIN3,ON);	
+	 }
+}

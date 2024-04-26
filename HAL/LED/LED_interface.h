@@ -7,9 +7,21 @@
 #define PF_PIN0_PUR     0x01
 #define PIN0            0
 #define PIN4            4
+#define PIN1            1
+#define PIN2            2
+#define PIN3            3
+
+
+/*******************< LED Macros ********************/
+#define RGB_RED					1
+#define RGB_BLUE				2
+#define RGB_GREEN				3
+#define OFF							0
+#define ON							1
 
 /*******************< Direction Macros ********************/
 #define INPUT           0
+#define OUTPUT          1
 
 /*******************< Switches Macros ********************/
 #define PF_SW1          1
