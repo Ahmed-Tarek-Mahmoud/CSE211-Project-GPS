@@ -25,7 +25,8 @@
 
 
 /*************************< Functions ****************************/
-
+#define clear_bit( Register ,Bit_No) Register &= ~(1<<Bit_No)
+#define set_bit( Register , Bit_No) Register |=(1<<Bit_No)
 
 /**
  * @brief   This function UART_Init initializes a UART (Universal Asynchronous Receiver/Transmitter)
@@ -69,7 +70,5 @@
  *
 */
 void UART_Init(uint8_t UARTNo,uint32_t BaudRate, uint8_t DataBits, uint8_t Parity, uint8_t StopBits);
-void clear_bit(uint32_t Register ,uint8_t Bit_No);
-void set_bit(uint32_t Register ,uint8_t Bit_No);
 
 #endif

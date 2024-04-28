@@ -375,16 +375,10 @@ void UART_Init(uint8_t UARTNo,uint32_t BaudRate, uint8_t DataBits, uint8_t Parit
 					else if(StopBits==STOP_2bit)
 						set_bit(UART7_LCRH_R,3);
 					UART7_CTL_R |= 0x0301;
-					break;					
+					break;
         }
 
 }
 /////////////////////////////////////////  	END  /////////////////////////////////////////////
 
-void set_bit(uint32_t Register ,uint8_t Bit_No){
-	Register |=(1<<Bit_No);
-}
 
-void clear_bit(uint32_t Register ,uint8_t Bit_No){
-    Register &= ~(1<<Bit_No);
-}
