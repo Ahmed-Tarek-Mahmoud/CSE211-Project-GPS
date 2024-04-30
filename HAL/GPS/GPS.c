@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include "tm4c123gh6pm.h"
 #include "GPS.h"
-#include <math.h>
+#include <cmath>
 
 
 uint8_t GPS_ReceiveLog(float *LatReturn, float *LongReturn , float *VelocityReturn)
@@ -96,17 +96,16 @@ float GPS_ToDegree(float decimal){
     return ( degree + (minutes/60) );
 }
 
-//GPS_ToDegree return value will be param here
 float GPS_ToRadian(float degree){
     return ( degree * (PI /180) );
 }
 
 float GPS_CalcDist(float LatA , float LongA , float LatB , float LongB){
     //Rad Angles
-    float RadLatA = GPS_ToRadian( GPS_ToDegree(LatA) );
-    float RadLongA = GPS_ToRadian( GPS_ToDegree(LongA) );
-    float RadLatB = GPS_ToRadian( GPS_ToDegree(LatB) );
-    float RadLongB = GPS_ToRadian( GPS_ToDegree(LongB) );
+    float RadLatA = GPS_ToRadian( LatA );
+    float RadLongA = GPS_ToRadian( LongA );
+    float RadLatB = GPS_ToRadian( LatB );
+    float RadLongB = GPS_ToRadian( LongB );
 
     //Difference
     float LatDiff = RadLatB - RadLatA ; 
