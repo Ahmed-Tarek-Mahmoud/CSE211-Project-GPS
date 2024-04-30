@@ -3,8 +3,6 @@
 #include "GPS.h"
 #include <math.h>
 
-<<<<<<< HEAD
-#include "GPS.h"
 
 uint8_t GPS_ReceiveLog(float *LatReturn, float *LongReturn , float *VelocityReturn)
 {
@@ -91,7 +89,6 @@ uint8_t GPS_LogParsing(char *RecievedSentence,float *LatReturn, float *LongRetur
     return NotValid;
 
 }
-=======
 
 float GPS_ToDegree(float decimal){
     int degree = (int)decimal / 100;
@@ -120,4 +117,3 @@ float GPS_CalcDist(float LatA , float LongA , float LatB , float LongB){
     double c = 2 * atan2(sqrt(a) , sqrt(1-a));
     return ( EarthRadius * c );
 }
->>>>>>> dbe6f7bc79ad4c97d99583ba46c278b7beda9c85
