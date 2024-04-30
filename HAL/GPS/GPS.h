@@ -6,8 +6,14 @@
 
 
 /*******************< Macros ********************/
+<<<<<<< HEAD
 #define NotValid 0 // Not Valid log
 #define Valid 1 // Valid log
+=======
+
+#define PI 3.14159265358979323846
+const double EarthRadius = 6371000;
+>>>>>>> dbe6f7bc79ad4c97d99583ba46c278b7beda9c85
 
 /*******************< Functions *****************/
 /**
