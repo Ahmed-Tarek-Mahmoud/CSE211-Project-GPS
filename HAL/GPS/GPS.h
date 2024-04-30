@@ -2,25 +2,28 @@
 #define GPS_INTERFACE
 
 #include <stdint.h>
+#include <string.h>
+
 
 /*******************< Macros ********************/
-
+#define NotValid 0 // Not Valid log
+#define Valid 1 // Valid log
 
 /*******************< Functions *****************/
 /**
  * @brief This function is responsible for receiving the log from the GPS using UART protocol
  *        The only log I am intrested in is the one starting with "$GPRMC".
- *        after recieving the correct log call the parsing function.
+ *        after recieving the correct log, call the parsing function.
  *        return current lat ,long and velocity in the passed arguments.
 */
-void GPS_ReceiveLog(float *LatReturn, float *LongReturn , uint8_t *VelocityReturn);
+void GPS_ReceiveLog(float *LatReturn, float *LongReturn , float *VelocityReturn);
 
 /**
  * @brief This function is responsible for parsing the log from the GPS using UART protocol
  *        You are supposed to store the data in a 2D charcter array 12 rows (fields) and 15 columns (String width)
  *        return current lat ,long and velocity in the passed arguments.
 */
-void GPS_LogParsing(uint8_t *RecievedSentence,float *LatReturn, float *LongReturn , uint8_t *VelocityReturn);
+uint8_t GPS_LogParsing(char *RecievedSentence,float *LatReturn, float *LongReturn , float *VelocityReturn);
 
 
 /**
