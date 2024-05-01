@@ -379,6 +379,126 @@ void UART_Init(uint8_t UARTNo,uint32_t BaudRate, uint8_t DataBits, uint8_t Parit
         }
 
 }
+
+
+
+void UART_sendChar(uint8_t uartNo,char data){
+	// char out
+	switch (uartNo)
+	{
+	case UART0:
+		while((UART0_FR_R & 0x0020) != 0);	
+	    UART0_DR_R = data;
+		break;
+	case UART1:
+		while((UART1_FR_R & 0x0020) != 0);	
+	    UART1_DR_R = data;
+		break;
+	case UART2:
+		while((UART2_FR_R & 0x0020) != 0);	
+	    UART2_DR_R = data;
+		break;
+	case UART3:
+		while((UART3_FR_R & 0x0020) != 0);	
+	    UART3_DR_R = data;
+		break;
+	case UART4:
+		while((UART4_FR_R & 0x0020) != 0);	
+	    UART4_DR_R = data;
+		break;
+	case UART5:
+		while((UART5_FR_R & 0x0020) != 0);	
+	    UART5_DR_R = data;
+		break;
+	case UART6:
+		while((UART6_FR_R & 0x0020) != 0);	
+	    UART6_DR_R = data;
+		break;
+	case UART7:
+		while((UART7_FR_R & 0x0020) != 0);	
+	    UART7_DR_R = data;
+		break;
+
+	default:
+	    // error 
+		break;
+	}
+	
+}
+
+
+
+char UART_receiveChar(uint8_t uartNo){
+	// char in
+	
+    switch (uartNo)
+	{
+	case UART0:
+		while((UART0_FR_R & 0x0010) != 0);
+	    return (char) UART0_DR_R;
+		break;
+	case UART1:
+		while((UART1_FR_R & 0x0010) != 0);
+	    return (char) UART1_DR_R;
+		break;
+	case UART2:
+		while((UART2_FR_R & 0x0010) != 0);
+	    return (char) UART2_DR_R;
+		break;
+	case UART3:
+		while((UART3_FR_R & 0x0010) != 0);
+	    return (char) UART3_DR_R;
+		break;
+	case UART4:
+		while((UART4_FR_R & 0x0010) != 0);
+	    return (char) UART4_DR_R;
+		break;
+	case UART5:
+		while((UART5_FR_R & 0x0010) != 0);
+	    return (char) UART5_DR_R;
+		break;
+	case UART6:
+		while((UART6_FR_R & 0x0010) != 0);
+	    return (char) UART6_DR_R;
+		break;
+	case UART7:
+		while((UART7_FR_R & 0x0010) != 0);
+	    return (char) UART7_DR_R;
+		break;
+
+	default:
+	    // error 
+		break;
+	}
+
+}
+
+
+void UART_getString(char *cmd, uint32_t len,uint8_t uartNo){
+	char character;
+	int i;
+	for(i = 0; i<len ;i++){
+		character = UART_receiveChar(uartNo);
+		
+		if(character != '*'){
+			UART_sendChar(uartNo,character);
+			cmd[i] = character;
+		}
+		else if(character == '*') {
+			UART_sendChar(uartNo , character);
+			cmd[i] = character;
+			break;
+		}
+	}
+}
+
+void UART_OutString(char *ptr,uint8_t uartNo){
+	while(*ptr){
+		UART_sendChar(uartNo , *ptr);
+		ptr++;
+	}
+}
+
 /////////////////////////////////////////  	END  /////////////////////////////////////////////
 
 
