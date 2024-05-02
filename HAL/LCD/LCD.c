@@ -108,7 +108,7 @@ void LCD_SendCommand(uint8_t Command){
 void LCD_SendChar(uint8_t Character){
     GPIO_SetPinValue(LCD_CONTROL_PORT, LCD_RS_PIN, GPIO_HIGH);
     GPIO_SetPinValue(LCD_CONTROL_PORT, LCD_RW_PIN, GPIO_LOW);
-    #if LCD_MODE == LCD_8_BIT_MODE{
+    #if LCD_MODE == LCD_8_BIT_MODE
 		GPIO_SetPinValue(LCD_DATA_PORT, LCD_D0_PIN, Character & (0x01 << LCD_D0_PIN));
 		GPIO_SetPinValue(LCD_DATA_PORT, LCD_D1_PIN, Character & (0x01 << LCD_D1_PIN));
 		GPIO_SetPinValue(LCD_DATA_PORT, LCD_D2_PIN, Character & (0x01 << LCD_D2_PIN));
@@ -118,8 +118,8 @@ void LCD_SendChar(uint8_t Character){
 		GPIO_SetPinValue(LCD_DATA_PORT, LCD_D6_PIN, Character & (0x01 << LCD_D6_PIN));
 		GPIO_SetPinValue(LCD_DATA_PORT, LCD_D7_PIN, Character & (0x01 << LCD_D7_PIN));
 		send_pulse();
-	}
-    #elif LCD_MODE == LCD_4_BIT_MODE{
+	
+    #elif LCD_MODE == LCD_4_BIT_MODE
 		GPIO_SetPinValue(LCD_DATA_PORT, LCD_D4_PIN, Character & (0x01 << LCD_D4_PIN));
 		GPIO_SetPinValue(LCD_DATA_PORT, LCD_D5_PIN, Character & (0x01 << LCD_D5_PIN));
 		GPIO_SetPinValue(LCD_DATA_PORT, LCD_D6_PIN, Character & (0x01 << LCD_D6_PIN));
@@ -131,7 +131,7 @@ void LCD_SendChar(uint8_t Character){
 		GPIO_SetPinValue(LCD_DATA_PORT, LCD_D6_PIN, Character & (0x01 << LCD_D6_PIN));
 		GPIO_SetPinValue(LCD_DATA_PORT, LCD_D7_PIN, Character & (0x01 << LCD_D7_PIN));
 		send_pulse();
-    }
+    
 	#endif
 }
         
