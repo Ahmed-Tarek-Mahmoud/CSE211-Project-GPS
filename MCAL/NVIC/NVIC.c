@@ -1,9 +1,50 @@
-#include <stdint.h>
-
 #include "NVIC.h"
 
 #include "tm4c123gh6pm.h"
 
+//////////////////////////////////////////////////// * EnableInterrupt * ////////////////////////////////////////////////////
+void NVIC_EnableInterrupt(uint8_t IntNumber){
+			//pointer to the register of Enable needed
+			volatile uint32_t *ptr;
+			//offset to be added to the address of the first priority register and to store the bit we want to access
+			uint8_t offset;
+			//setting the offset(each enable reg have 32 bit, one for each interrupt )
+			offset=(IntNumber/32)*4;
+			//choosing the register upon the IRQ 
+			ptr=(uint32_t *)(0xE000E100+offset);
+			offset=IntNumber%32;
+			*ptr|=(1<<offset);
+}
+
+//////////////////////////////////////////////////// * DisableInterrupt * ////////////////////////////////////////////////////
+void NVIC_DisableInterrupt(uint8_t IntNumber){
+			//pointer to the register of disable needed
+			volatile uint32_t *ptr;
+			//offset to be added to the address of the first disable register and to store the bit we want to access
+			uint8_t offset;
+			//setting the offset(each enable reg have 32 bit, one for each interrupt )
+			offset=(IntNumber/32)*4;
+			//choosing the register upon the IRQ 
+			ptr=(uint32_t *)(0xE000E180+offset);
+			offset=IntNumber%32;
+			*ptr|=(1<<offset);
+
+}
+
+//////////////////////////////////////////////////// * SetPendingFlag * ////////////////////////////////////////////////////
+void NVIC_SetPendingFlag(uint8_t IntNumber){
+			//pointer to the register of pending needed
+			volatile uint32_t *ptr;
+			//offset to be added to the address of the first pending register and to store the bit we want to access
+			uint8_t offset;
+			//setting the offset(each enable reg have 32 bit, one for each interrupt )
+			offset=(IntNumber/32)*4;
+			//choosing the register upon the IRQ 
+			ptr=(uint32_t *)(0xE000E200+offset);
+			offset=IntNumber%32;
+			*ptr|=(1<<offset);
+
+}
 
 //////////////////////////////////////////////////// * ClearPendingFlag * ////////////////////////////////////////////////////
 void NVIC_ClearPendingFlag(uint8_t IntNumber){
