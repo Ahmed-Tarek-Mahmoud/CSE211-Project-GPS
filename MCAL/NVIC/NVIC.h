@@ -44,7 +44,7 @@ void NVIC_ClearPendingFlag(uint8_t IntNumber);
 */
 void NVIC_GetActiveFlag(uint8_t IntNumber, uint8_t *Result);
 /**
- * @brief: Retrieves the active flag status for the specified interrupt.
+ * @brief: Set the priority of the wanted interrupt range from 0 to 7.
  *
  * @param IntNumber: An 8-bit unsigned integer representing the interrupt number for which the priority wanted to be set.
  *
