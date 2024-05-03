@@ -4,7 +4,7 @@
 #include <cmath>
 
 
-uint8_t GPS_ReceiveLog(float *LatReturn, float *LongReturn , float *VelocityReturn)
+uint8_t GPS_ReceiveLog(float *LatReturn, float *LongReturn , float *VelocityReturn,uint8_t uartNo)
 {
     
     char ReqLog [] = "$GPRMC,";
@@ -15,7 +15,7 @@ uint8_t GPS_ReceiveLog(float *LatReturn, float *LongReturn , float *VelocityRetu
     //checks if the recieved log is the required log 
 
     do { 
-        if (UART_GetChar() == ReqLog[i]) 
+        if (UART_receiveChar(uartNo) == ReqLog[i]) 
         {
             i++;
         }
@@ -29,9 +29,9 @@ uint8_t GPS_ReceiveLog(float *LatReturn, float *LongReturn , float *VelocityRetu
 
     //If the required log is sent store the recieved char into the array
 
-    while (UART_GetChar() != '*')
+    while (UART_receiveChar(uartNo) != '*')
     {
-        ReceivedData[i] = UART_GetChar();
+        ReceivedData[i] = UART_receiveChar(uartNo);
         i++;
     }
 

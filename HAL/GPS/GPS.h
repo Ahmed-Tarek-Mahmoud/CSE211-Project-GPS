@@ -19,7 +19,7 @@ const double EarthRadius = 6371000;
  *        after recieving the correct log, call the parsing function.
  *        return current lat ,long and velocity in the passed arguments.
 */
-uint8_t GPS_ReceiveLog(float *LatReturn, float *LongReturn , float *VelocityReturn);
+uint8_t GPS_ReceiveLog(float *LatReturn, float *LongReturn , float *VelocityReturn,uint8_t uartNo);
 
 /**
  * @brief This function is responsible for parsing the log from the GPS using UART protocol
