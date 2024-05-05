@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include "tm4c123gh6pm.h"
 #include "GPS.h"
-#include <cmath>
+#include <math.h>
 
 
 uint8_t GPS_ReceiveLog(float *LatReturn, float *LongReturn , float *VelocityReturn,uint8_t uartNo)
