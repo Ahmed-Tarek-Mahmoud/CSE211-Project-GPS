@@ -1,5 +1,5 @@
-#include "STK_config.h"
 #include "STK_interface.h"
+#include "STK_config.h"
 #include "tm4c123gh6pm.h"
 
 
@@ -7,10 +7,14 @@
 void STK_Init(uint32_t Ticks){
 
         STK_Disable();
+#if (INTERRUPT_CONDITION == USE_INTERRUPT)
+        STK_EnableInterrupt();
+#else
+        STK_DisableInterrupt();
+#endif
         STK_Reset();
         STK_SetReloadValue(Ticks);
         STK_Enable();
-
 }
 
 
@@ -65,15 +69,9 @@ void STK_DisableInterrupt(void){
 
 void STK_Delay(uint32_t DelayMs){
 
-        //in case for using interrupt once for the whole time
-
-        STK_DisableInterrupt();
-        for(uint32_t i;i< (DelayMs-1) ;i++){
+        for(uint32_t i;i< (DelayMs) ;i++){
             STK_Init(80000);
             while( (NVIC_ST_CTRL_R & NVIC_ST_CTRL_COUNT) == 0);
         }
-        STK_EnableInterrupt();
-        STK_Init(80000);
-
 
 }

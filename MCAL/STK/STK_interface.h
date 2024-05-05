@@ -3,6 +3,12 @@
 
 #include "stdint.h"
 
+/**********************<INTERRUPT STATES **********************/
+#define DONT_USE_INTERRUPT       0
+#define USE_INTERRUPT            1
+
+//DEFUALT CONDITION IS DONT_USE_INTERRUPT
+#define INTERRUPT_CONDITION DONT_USE_INTERRUPT
 
 
 /** @brief 	This function configures the SysTick timer with the specified number of ticks
