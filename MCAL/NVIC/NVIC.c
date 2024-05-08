@@ -106,15 +106,15 @@ void NVIC_SetPriority(uint8_t IRQ,uint8_t priority){
 }
 
 ///////////////////////////////////////////// * Enable port F switch Interrupt * /////////////////////////////////////////////
-void NVIC_GPIO_PORTF_Enable(void){
+void SW2_InterruptInit(void){
 		// Interrupt Sense (0 for edge sensitive , 1 for level sensitive)
-		GPIO_PORTF_IS_R &= ~0x11;
+		GPIO_PORTF_IS_R &= ~0x01;
 		// Interrupt Both Edges
-		GPIO_PORTF_IBE_R &= ~0x11;
+		GPIO_PORTF_IBE_R &= ~0x01;
 		// Interrupt Event (0 for falling edge , 1 for rising edge)
-		GPIO_PORTF_IEV_R &= ~0x11;
+		GPIO_PORTF_IEV_R &= ~0x01;
 		// Interrupt Mask
-		GPIO_PORTF_IM_R |=0x11;
+		GPIO_PORTF_IM_R |=0x01;
 		// Interrupt Clear
-		GPIO_PORTF_ICR_R |= 0x11;
+		GPIO_PORTF_ICR_R |= 0x01;
 }

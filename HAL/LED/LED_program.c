@@ -24,8 +24,10 @@ void Switch_Init(uint8_t SwitchNo)
 
 void LEDx_On(uint8_t LedColor)
 {
-    GPIO_Init(GPIO_PORTF);
-   
+    GPIO_SetPinValue(GPIO_PORTF,PIN1,OFF);
+    GPIO_SetPinValue(GPIO_PORTF,PIN2,OFF);
+    GPIO_SetPinValue(GPIO_PORTF,PIN3,OFF);
+
    if (LedColor == RGB_RED)
    {
     GPIO_SetPinDirection(GPIO_PORTF,PIN1,OUTPUT);

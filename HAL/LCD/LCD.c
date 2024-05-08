@@ -4,6 +4,7 @@
 #include "LCD_config.h"
 #include "GPIO_program.c"
 #include "GPIO_interface.h"
+#include "string.h"
 
 void LCD_Init(void){
 
@@ -145,7 +146,7 @@ void LCD_SendString(uint8_t *String){
 void LCD_SendNumber(float number){
     char buffer[10];
     dtostrf(number, -7, 3, buffer);
-    LCD_SendString(*buffer);
+    LCD_SendString(buffer);
 
 }
 
