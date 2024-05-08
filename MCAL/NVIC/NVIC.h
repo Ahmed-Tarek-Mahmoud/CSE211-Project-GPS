@@ -43,6 +43,7 @@ void NVIC_ClearPendingFlag(uint8_t IntNumber);
  *
 */
 void NVIC_GetActiveFlag(uint8_t IntNumber, uint8_t *Result);
+
 /**
  * @brief: Set the priority of the wanted interrupt range from 0 to 7.
  *
@@ -52,5 +53,14 @@ void NVIC_GetActiveFlag(uint8_t IntNumber, uint8_t *Result);
  *
 */
 void NVIC_SetPriority(uint8_t IRQ,uint8_t priority);
+
+/**
+ * @brief: Enables the interrupt of GPIO port F pin 0 and 4.
+ *
+ * The two switches are Edge sensitive reacts on a single falling edge.
+ *
+ * @param No param.
+*/
+void NVIC_GPIO_PORTF_Enable(void);
 
 #endif

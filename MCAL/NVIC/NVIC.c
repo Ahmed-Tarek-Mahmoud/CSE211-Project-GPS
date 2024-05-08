@@ -10,7 +10,7 @@ void NVIC_EnableInterrupt(uint8_t IntNumber){
 			uint8_t offset;
 			//setting the offset(each enable reg have 32 bit, one for each interrupt )
 			offset=(IntNumber/32)*4;
-			//choosing the register upon the IRQ 
+			//choosing the register upon the IRQ
 			ptr=(uint32_t *)(0xE000E100+offset);
 			offset=IntNumber%32;
 			*ptr|=(1<<offset);
@@ -24,7 +24,7 @@ void NVIC_DisableInterrupt(uint8_t IntNumber){
 			uint8_t offset;
 			//setting the offset(each enable reg have 32 bit, one for each interrupt )
 			offset=(IntNumber/32)*4;
-			//choosing the register upon the IRQ 
+			//choosing the register upon the IRQ
 			ptr=(uint32_t *)(0xE000E180+offset);
 			offset=IntNumber%32;
 			*ptr|=(1<<offset);
@@ -39,7 +39,7 @@ void NVIC_SetPendingFlag(uint8_t IntNumber){
 			uint8_t offset;
 			//setting the offset(each enable reg have 32 bit, one for each interrupt )
 			offset=(IntNumber/32)*4;
-			//choosing the register upon the IRQ 
+			//choosing the register upon the IRQ
 			ptr=(uint32_t *)(0xE000E200+offset);
 			offset=IntNumber%32;
 			*ptr|=(1<<offset);
@@ -103,5 +103,18 @@ void NVIC_SetPriority(uint8_t IRQ,uint8_t priority){
 					*ptr=(*ptr&0x00FFFFFF)|(priority<<29);
 					break;
 				}
+}
 
+///////////////////////////////////////////// * Enable port F switch Interrupt * /////////////////////////////////////////////
+void NVIC_GPIO_PORTF_Enable(void){
+		// Interrupt Sense (0 for edge sensitive , 1 for level sensitive)
+		GPIO_PORTF_IS_R &= ~0x11;
+		// Interrupt Both Edges
+		GPIO_PORTF_IBE_R &= ~0x11;
+		// Interrupt Event (0 for falling edge , 1 for rising edge)
+		GPIO_PORTF_IEV_R &= ~0x11;
+		// Interrupt Mask
+		GPIO_PORTF_IM_R |=0x11;
+		// Interrupt Clear
+		GPIO_PORTF_ICR_R |= 0x11;
 }
