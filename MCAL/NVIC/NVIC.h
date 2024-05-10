@@ -61,6 +61,6 @@ void NVIC_SetPriority(uint8_t IRQ,uint8_t priority);
  *
  * @param No param.
 */
-void NVIC_GPIO_PORTF_Enable(void);
+void SW2_InterruptInit(void);
 
 #endif

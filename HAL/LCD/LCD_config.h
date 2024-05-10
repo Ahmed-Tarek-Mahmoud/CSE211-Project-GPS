@@ -1,18 +1,18 @@
 #ifndef HAL_LCD_CONFIG
 #define HAL_LCD_CONFIG
 
-//*************************LCD_MODES***************************
+// *************************LCD_MODES***************************
 #define LCD_MODE                LCD_4_BIT_MODE
 #define LCD_8_BIT_MODE          8
 #define LCD_4_BIT_MODE          4
 
-//*************************CONTROL PORT*************************
-#define LCD_CONTROL_PORT                GPIO_PORTB
-#define LCD_RS_PIN                      PIN0
-#define LCD_RW_PIN                      PIN1
-#define LCD_EN_PIN                      PIN2
+// *************************CONTROL PORT*************************
+#define LCD_CONTROL_PORT                GPIO_PORTA
+#define LCD_RS_PIN                      PIN2
+#define LCD_RW_PIN                      PIN3
+#define LCD_EN_PIN                      PIN4
 
-//*************************DATA PORT****************************
+// *************************DATA PORT****************************
 #define LCD_DATA_PORT                   GPIO_PORTB
 #define LCD_D0_PIN                      PIN0
 #define LCD_D1_PIN                      PIN1 
@@ -23,7 +23,7 @@
 #define LCD_D6_PIN                      PIN6
 #define LCD_D7_PIN                      PIN7
 
-//***************************LCD command**********************
+// ***************************LCD command**********************
 #define LCD_CLEAR_COMMAND                       0x01
 #define LCD_DECREMENT_CURSOR                    0x04
 #define LCD_INCREMENT_CURSOR                    0x06
@@ -38,9 +38,9 @@
 #define LCD_CURSOR_BEGIN_FIRST_LINE             0x80
 #define LCD_CURSOR_BEGIN_SECOND_LINE            0xC0
 #define LCD_8_BIT_MODE_COMMAND                  0x38
-#define LCD_4_BIT_MODE_COMMAND                  0x28
-
-
+#define LCD_4_BIT_MODE_COMMAND3                 0x28
+#define LCD_4_BIT_MODE_COMMAND2                 0x32
+#define LCD_4_BIT_MODE_COMMAND1                 0x33
 
 
 #endif

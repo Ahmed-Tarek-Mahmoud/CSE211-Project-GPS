@@ -1,9 +1,8 @@
-#include <stdint.h>
 
 #include "LED_interface.h"
-
-#include "tm4c123gh6pm.h"
-
+#include "C:\Users\Ahmed Tarek\Desktop\Embedded labs\Project v1\MCAL\GPIO\GPIO_interface.h"
+#include "C:\Users\Ahmed Tarek\Desktop\Embedded labs\Project v1\tm4c123gh6pm.h"
+#include "stdint.h"
 
 void Switch_Init(uint8_t SwitchNo)
 {

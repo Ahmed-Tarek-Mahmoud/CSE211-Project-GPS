@@ -1,6 +1,6 @@
 #ifndef LED_INTERFACE_H
 #define LED_INTERFACE_H
-
+#include "stdint.h"
 /*******************< PortF Macros ********************/
 #define GPIO_PORTF      5
 #define PF_PIN4_PUR     0x10

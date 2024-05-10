@@ -1,5 +1,6 @@
 #ifndef GPIO_INTERFACE_H
 #define GPIO_INTERFACE_H 
+#include "stdint.h"
 
 /*******************< Ports Macros ********************/
 
@@ -32,7 +33,7 @@
 #define PIN7        7
 
 
-//***************************************************************
+// ***************************************************************
 /**
  * @brief this function will initialize the passed port as digital input output
 */

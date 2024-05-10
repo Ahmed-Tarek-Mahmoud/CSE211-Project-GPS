@@ -10,7 +10,6 @@
 #define Valid 1 // Valid log
 
 #define PI 3.14159265358979323846
-const double EarthRadius = 6371000;
 
 /*******************< Functions *****************/
 /**

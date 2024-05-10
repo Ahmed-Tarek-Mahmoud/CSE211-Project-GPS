@@ -2,7 +2,7 @@
 
 #include "UART_interface.h"
 
-#include "tm4c123gh6pm.h"
+#include "C:\Users\Ahmed Tarek\Desktop\Embedded labs\Project v1\tm4c123gh6pm.h"
 
 
 void UART_Init(uint8_t UARTNo,uint32_t BaudRate, uint8_t DataBits, uint8_t Parity, uint8_t StopBits){
@@ -151,7 +151,7 @@ void UART_Init(uint8_t UARTNo,uint32_t BaudRate, uint8_t DataBits, uint8_t Parit
 					SYSCTL_RCGCGPIO_R |=0x04;
 					while(!(SYSCTL_PRGPIO_R & 0x04));
 					GPIO_PORTC_AFSEL_R |= 0xC0;
-					GPIO_PORTC_PCTL_R =(GPIO_PORTA_PCTL_R&0x00FFFFFF) + 0x11000000;
+					GPIO_PORTC_PCTL_R =(GPIO_PORTC_PCTL_R&0x00FFFFFF) + 0x11000000;
 					GPIO_PORTC_DEN_R |= 0xC0;
 					clear_bit(GPIO_PORTC_DIR_R,6);
 					set_bit(GPIO_PORTC_DIR_R,7);
@@ -240,18 +240,20 @@ void UART_Init(uint8_t UARTNo,uint32_t BaudRate, uint8_t DataBits, uint8_t Parit
 					break;
 ///////////////////////////////////////// UART5 /////////////////////////////////////////
 		case UART5:
+			    SYSCTL_RCGCUART_R |= 0x20;  // Enable UART5 clock
+		      uint8_t x; 
 					SYSCTL_RCGCGPIO_R |=0x10;
 					while(!(SYSCTL_PRGPIO_R & 0x10));
 					GPIO_PORTE_AFSEL_R |= 0x30;
-					GPIO_PORTE_PCTL_R =(GPIO_PORTA_PCTL_R&0xFF00FFFF) + 0x00110000;
+					GPIO_PORTE_PCTL_R =(GPIO_PORTE_PCTL_R&0xFF00FFFF) + 0x00110000;
 					GPIO_PORTE_DEN_R |= 0x30;
 					clear_bit(GPIO_PORTE_DIR_R,4);
 					set_bit(GPIO_PORTE_DIR_R,5);
 					GPIO_PORTE_AMSEL_R &= ~(0x30);
 					UART5_CTL_R &= ~(0x0001);
-					UART5_IBRD_R = (uint32_t)( UART_CLOCK / (BaudRate * 16));
-					UART5_FBRD_R = (uint32_t)(((UART_CLOCK / (BaudRate * 16.0))-((uint32_t)(UART_CLOCK / (BaudRate * 16))))*64+0.5);
-					UART5_LCRH_R |=0x10;
+					UART5_IBRD_R = 104;
+					UART5_FBRD_R = 11;
+					UART5_LCRH_R |=0x10; // FIFO
 					if(DataBits==DATA_5bits){
 						UART5_LCRH_R &= ~(0x60);  //clear bit 5,6
 					}
@@ -289,7 +291,7 @@ void UART_Init(uint8_t UARTNo,uint32_t BaudRate, uint8_t DataBits, uint8_t Parit
 					SYSCTL_RCGCGPIO_R |=0x08;
 					while(!(SYSCTL_PRGPIO_R & 0x08));
 					GPIO_PORTD_AFSEL_R |= 0x30;
-					GPIO_PORTD_PCTL_R =(GPIO_PORTA_PCTL_R&0xFF00FFFF) + 0x00110000;
+					GPIO_PORTD_PCTL_R =(GPIO_PORTD_PCTL_R&0xFF00FFFF) + 0x00110000;
 					GPIO_PORTD_DEN_R |= 0x30;
 					clear_bit(GPIO_PORTE_DIR_R,4);
 					set_bit(GPIO_PORTE_DIR_R,5);
@@ -332,17 +334,19 @@ void UART_Init(uint8_t UARTNo,uint32_t BaudRate, uint8_t DataBits, uint8_t Parit
 					break;
 ///////////////////////////////////////// UART7 /////////////////////////////////////////
 		case UART7:
+			    SYSCTL_RCGCUART_R |= 0x80;
 					SYSCTL_RCGCGPIO_R |=0x10;
+		      uint8_t xx;
 					while(!(SYSCTL_PRGPIO_R & 0x10));
 					GPIO_PORTE_AFSEL_R |= 0x03;
-					GPIO_PORTE_PCTL_R =(GPIO_PORTA_PCTL_R&0xffffff00) + 0x00000011;
+					GPIO_PORTE_PCTL_R =(GPIO_PORTE_PCTL_R&0xffffff00) + 0x00000011;
 					GPIO_PORTE_DEN_R |= 0x03;
 					clear_bit(GPIO_PORTE_DIR_R,0);
 					set_bit(GPIO_PORTE_DIR_R,1);
 					GPIO_PORTE_AMSEL_R &= ~(0x03);
 					UART7_CTL_R &= ~(0x0001);
-					UART7_IBRD_R = (uint32_t)( UART_CLOCK / (BaudRate * 16));
-					UART7_FBRD_R = (uint32_t)(((UART_CLOCK / (BaudRate * 16.0))-((uint32_t)(UART_CLOCK / (BaudRate * 16))))*64+0.5);
+					UART7_IBRD_R = 104;
+					UART7_FBRD_R = 11;
 					UART7_LCRH_R |=0x10;
 					if(DataBits==DATA_5bits){
 						UART7_LCRH_R &= ~(0x60);  //clear bit 5,6
@@ -436,39 +440,38 @@ char UART_receiveChar(uint8_t uartNo){
 	case UART0:
 		while((UART0_FR_R & 0x0010) != 0);
 	    return (char) UART0_DR_R;
-		break;
+		
 	case UART1:
 		while((UART1_FR_R & 0x0010) != 0);
 	    return (char) UART1_DR_R;
-		break;
+		
 	case UART2:
 		while((UART2_FR_R & 0x0010) != 0);
 	    return (char) UART2_DR_R;
-		break;
+		
 	case UART3:
 		while((UART3_FR_R & 0x0010) != 0);
 	    return (char) UART3_DR_R;
-		break;
+		
 	case UART4:
 		while((UART4_FR_R & 0x0010) != 0);
 	    return (char) UART4_DR_R;
-		break;
+		
 	case UART5:
 		while((UART5_FR_R & 0x0010) != 0);
 	    return (char) UART5_DR_R;
-		break;
+		
 	case UART6:
 		while((UART6_FR_R & 0x0010) != 0);
 	    return (char) UART6_DR_R;
-		break;
+		
 	case UART7:
 		while((UART7_FR_R & 0x0010) != 0);
 	    return (char) UART7_DR_R;
-		break;
 
 	default:
-	    // error 
-		break;
+	    // error
+    return '0';	
 	}
 
 }
@@ -480,11 +483,14 @@ void UART_getString(char *cmd, uint32_t len,uint8_t uartNo){
 	for(i = 0; i<len ;i++){
 		character = UART_receiveChar(uartNo);
 		
-		if(character != '*'){
+	if(character != 0x0D){
 			UART_sendChar(uartNo,character);
 			cmd[i] = character;
+		if(character == 0x2A){
+			break;
 		}
-		else if(character == '*') {
+		}
+		else if(character == 0x0D) {
 			UART_sendChar(uartNo , character);
 			cmd[i] = character;
 			break;

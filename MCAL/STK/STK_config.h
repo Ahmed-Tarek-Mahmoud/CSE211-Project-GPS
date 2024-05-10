@@ -15,7 +15,7 @@
  *          options: 1) DONT_USE_INTERRUPT
  *                   2) USE_INTERRUPT
 */
-#define INTERRUPT_CONDITION
+#define INTERRUPT_CONDITION   DONT_USE_INTERRUPT
 
 
 #endif

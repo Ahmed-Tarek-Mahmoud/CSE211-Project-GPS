@@ -1,16 +1,15 @@
 #ifndef MCAL_STK_INTERFACE_H
 #define MCAL_STK_INTERFACE_H
 
-#include "stdint.h"
 
 /**********************<INTERRUPT STATES **********************/
 #define DONT_USE_INTERRUPT       0
 #define USE_INTERRUPT            1
 
-//DEFUALT CONDITION IS DONT_USE_INTERRUPT
+// DEFUALT CONDITION IS DONT_USE_INTERRUPT
 #define INTERRUPT_CONDITION DONT_USE_INTERRUPT
 
-
+#include "stdint.h"
 /** @brief 	This function configures the SysTick timer with the specified number of ticks 
  *			and enables it with the system clock as its clock source
  *  @param 	Ticks : reload value to the Systick Timer.

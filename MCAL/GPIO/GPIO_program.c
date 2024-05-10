@@ -1,8 +1,7 @@
-#include <stdint.h>
 
-#include "GPIO_interface.h"
-
-#include "tm4c123gh6pm.h"
+#include "C:\Users\Ahmed Tarek\Desktop\Embedded labs\Project v1\MCAL\GPIO\GPIO_interface.h"
+#include "stdint.h"
+#include "C:\Users\Ahmed Tarek\Desktop\Embedded labs\Project v1\tm4c123gh6pm.h"
 
 void GPIO_Init(uint8_t PortId){
 	SYSCTL_RCGCGPIO_R |= (1<<PortId);
@@ -22,7 +21,7 @@ void GPIO_Init(uint8_t PortId){
 			GPIO_PORTB_AFSEL_R = 0x00;
 			GPIO_PORTB_PCTL_R = 0x00000000;
 			GPIO_PORTB_AMSEL_R=0x00;
-			GPIO_PORTB_DEN_R=0xFF;
+			GPIO_PORTB_DEN_R|=0xFF;
 			break;
 		//risky port
 		case GPIO_PORTC:
@@ -43,19 +42,19 @@ void GPIO_Init(uint8_t PortId){
 			break;
 		case GPIO_PORTE:
 			GPIO_PORTE_LOCK_R = 0x4C4F434B;
-			GPIO_PORTE_CR_R = 0xFF;
-			GPIO_PORTE_AFSEL_R = 0x00;
-			GPIO_PORTE_PCTL_R = 0x00000000;
-			GPIO_PORTE_AMSEL_R=0x00;
-			GPIO_PORTE_DEN_R=0xFF;
+			GPIO_PORTE_CR_R |= 0xFF;
+			GPIO_PORTE_AFSEL_R &= ~(0x11);
+			GPIO_PORTE_PCTL_R &= ~(0xFFFFFFFF);
+			GPIO_PORTE_AMSEL_R&= ~(0x11);
+			GPIO_PORTE_DEN_R|=0xFF;
 			break;
 		case GPIO_PORTF:
 			GPIO_PORTF_LOCK_R = 0x4C4F434B;	
-			GPIO_PORTF_CR_R = 0xFF;
-			GPIO_PORTF_AFSEL_R = 0x00;
-			GPIO_PORTF_PCTL_R = 0x00000000;
-			GPIO_PORTF_AMSEL_R=0x00;
-			GPIO_PORTF_DEN_R=0xFF;
+			GPIO_PORTF_CR_R |= 0xFF;
+			GPIO_PORTF_AFSEL_R &= ~(0x11);
+			GPIO_PORTF_PCTL_R &= ~(0xFFFFFFFF);
+			GPIO_PORTF_AMSEL_R&= ~(0x11);
+			GPIO_PORTF_DEN_R|=0xFF;
 			break;
 	}
 }

@@ -1,17 +1,19 @@
 #include "STK_interface.h"
 #include "STK_config.h"
-#include "tm4c123gh6pm.h"
+#include "C:\Users\Ahmed Tarek\Desktop\Embedded labs\Project v1\tm4c123gh6pm.h"
 
 
 
 void STK_Init(uint32_t Ticks){
 
         STK_Disable();
-#if (INTERRUPT_CONDITION == USE_INTERRUPT)
+	/*
+#if INTERRUPT_CONDITION == USE_INTERRUPT
         STK_EnableInterrupt();
 #else
-        STK_DisableInterrupt();
+        
 #endif
+	*/    STK_DisableInterrupt();
         STK_Reset();
         STK_SetReloadValue(Ticks);
         STK_Enable();
@@ -70,7 +72,7 @@ void STK_DisableInterrupt(void){
 void STK_Delay(uint32_t DelayMs){
 
         for(uint32_t i;i< (DelayMs) ;i++){
-            STK_Init(80000);
+            STK_Init(16000);
             while( (NVIC_ST_CTRL_R & NVIC_ST_CTRL_COUNT) == 0);
         }
 

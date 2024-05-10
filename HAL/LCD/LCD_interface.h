@@ -112,7 +112,7 @@ void LCD_SendNumber(float number);
  * @brief This function clears the lcd using the command macro and function LCD_SendCommand()
 */
 
-void LCD_clear();
+void LCD_clear(void);
 
 
 /**
@@ -126,5 +126,9 @@ void LCD_clear();
 */
 
 void LCD_setCursor( uint8_t row , uint8_t column );
+
+
+
+void lcd_send_number(int num);
 
 #endif
