@@ -151,7 +151,7 @@ void LCD_SendString(uint8_t *String){
     while(String[Local_Counter] != '\0'){
         LCD_SendChar(String[Local_Counter]);
         Local_Counter++;
-       // LCD_SendCommand(LCD_INCREMENT_CURSOR);
+        STK_Delay(50);
     }
 }
 

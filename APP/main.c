@@ -18,6 +18,7 @@
 #include "driverlib/gpio.h"
 #include "driverlib/flash.h"
 #include "driverlib/eeprom.h"
+#include "driverlib/fpu.h"
 
 
 #include "C:\Users\Ahmed Tarek\Desktop\Embedded labs\Project v1\MCAL\GPIO\GPIO_interface.h"
@@ -32,30 +33,27 @@
 void EEPROMsaving(void);
 void sysInit(void);
 void PC_Data(void);
-void GPIOF_Handler(void);
+//void GPIOF_Handler(void);
 
-float Lats[400] ={},Longs[400]={}; 
+float Lats[400];
+float Longs[400];
 uint16_t cnt =0;
-uint16_t DistAcc = 0;
+float DistAcc = 0;
 float vel=-1;
 	
-	
 int main(void){
- //char rec[2] = {0};
+
 	sysInit();
 	
+	
 	LCD_clear();
-	//LCD_SendCommand(LCD_CURSOR_BEGIN_FIRST_LINE);
 	
 	LCD_SendString("Program Start");
 	STK_Delay(500);
-   LCD_setCursor(1,0);
+  LCD_setCursor(1,0);
 	STK_Delay(500);
-	lcd_send_number(120);
-	STK_Delay(500);
-  //LCD_SendString("Initializing..");
-	//UART_OutString("HELLO WORLD\n",UART7);
-	//UART_getString(rec,2,UART7);
+  LCD_SendString("Initializing..");
+	
 
     
    /* uint8_t marker = 0;
@@ -70,8 +68,7 @@ int main(void){
 
     UART_OutString("Enter 'Y' for final destination or 'N' for normal flow\n",UART7);
     char mode[2]={0};
-    //UART_getString(mode,2,UART7);
-    mode[0]='N';
+    UART_getString(mode,2,UART7);
     float Latfinal = -1,Longfinal=-1;
     if (mode[0]=='Y')
     {   
@@ -85,24 +82,40 @@ int main(void){
     }
 
     
-    float curLat = -1,curLong=-1,prevLat=30,prevLong=25;
+    float curLat = -1,curLong=-1,prevLat=-1,prevLong=-1;
 
     while (1)
     {    
        while (GPS_ReceiveLog(&curLat , &curLong, &vel , UART7) != 1){ // Loop until valid log or velocity not equal zero
-				 UART_OutString("loopppp\n",UART7);
-				 STK_Delay(1000);
+				 	UART_OutString("main\n",UART7);
 			 }
+			 
       if (prevLat == -1 && prevLong == -1)
       {
         prevLat = curLat;
         prevLong = curLong;
       }
-      Lats[cnt] = curLat;
-      Longs[cnt] = curLong;
-      cnt++;
+			char aaa[10]={0};
+			 sprintf(aaa, "%f", curLat-prevLat);
+			 char BBB[10]={0};
+			 sprintf(BBB, "%f", curLong-prevLong);
+			 char ccc[10]={0};
+			 
+			 UART_OutString("lat ",UART7);
+			 UART_OutString(aaa,UART7);
+			 UART_OutString("long ",UART7);
+			 UART_OutString(BBB,UART7);
+			 UART_OutString("\n",UART7);
+			 
+		  //Lats[cnt]=curLong;
+      //Longs[cnt]=curLat;		
+      cnt=cnt+1;
       DistAcc += GPS_CalcDist(curLat,curLong,prevLat,prevLong);
-
+			 float xx=DistAcc;
+			 sprintf(ccc, "%f",DistAcc);
+			UART_OutString("AccDistance:  ",UART7);
+			 UART_OutString(ccc,UART7);
+			 UART_OutString("\n",UART7);
       if (strcmp(mode,"Y") == 0 &&( fabs(curLat - Latfinal) <= 1e-6 ) && (fabs(curLong - Longfinal) <= 1e-6 ))
       {
         
@@ -124,8 +137,8 @@ int main(void){
       LCD_setCursor(1,0);
       LCD_SendString("Velocity: ");
       LCD_SendNumber(vel);
-			break;
     }
+		
     LEDx_On(RGB_RED);
     LCD_clear();
     STK_Delay(1000);
@@ -144,9 +157,9 @@ int main(void){
     {
       GPIO_GetPinValue(GPIO_PORTF,PIN4,&val);
     }
+		
     //EEPROMsaving();
     
-		//LCD_SendChar('H');
     while(1);
 }
 
@@ -156,10 +169,10 @@ void EEPROMsaving(void){
     uint8_t marker = 1;
     EEPROMProgram(&marker , 0x0 , sizeof(marker));    // write data int the EEPROM
 
-    EEPROMProgram(Lats , 0x4 , sizeof(Lats));          // write Latitudes in the EEPROM
-    EEPROMProgram(Longs , 0x7D4 , sizeof(Longs));      // write Longitudes in the EEPROM
+ //   EEPROMProgram(Lats , 0x4 , sizeof(Lats));          // write Latitudes in the EEPROM
+  //  EEPROMProgram(Longs , 0x7D4 , sizeof(Longs));      // write Longitudes in the EEPROM
     LEDx_On(RGB_GREEN);
-    while (1);
+    while (1);  // program finished
        
 }
 
@@ -169,7 +182,8 @@ void sysInit(){
 	 // SysCtlPeripheralEnable(SYSCTL_PERIPH_EEPROM0);
 
    // EEPROMInit();
-  //  EEPROMMassErase();  // erases EEPROM ( factory reset )
+   //  EEPROMMassErase();  // erases EEPROM ( factory reset )
+	  FPUEnable();
     STK_Init(16000);
     GPIO_Init(GPIO_PORTA);
     GPIO_Init(GPIO_PORTF);
@@ -178,10 +192,8 @@ void sysInit(){
     LCD_Init();
     UART_Init(UART5,9600,DATA_8bits,UART_PARITY_NONE,STOP_1bit);
     UART_Init(UART7,9600,DATA_8bits,UART_PARITY_NONE,STOP_1bit);
-    UART_OutString("Program start",UART7);
     Switch_Init(PF_SW1);
     Switch_Init(PF_SW2);
-   
     __asm("CPSIE i"); // Enable interrupts globally
     NVIC_EnableInterrupt(30); // Enable port F interrupt
     SW2_InterruptInit();
@@ -190,7 +202,7 @@ void sysInit(){
 }
 
 void PC_Data(){
-    char cmd[2] = {0};
+  /*  char cmd[2] = {0};
     UART_getString(cmd,2,UART5);
     while (strcmp(cmd,"U") != 0)
     {
@@ -211,14 +223,13 @@ void PC_Data(){
        sprintf(sss,"%f",Longs[i]);
        UART_OutString(sss,UART5);
     } 
-
+*/
     
 }
 
 void GPIOF_Handler(){
-  
+    
     LEDx_On(RGB_RED);
-    LCD_clear();
 	  LCD_clear();
     STK_Delay(200);
     LCD_SendString("Distance: ");
@@ -236,6 +247,7 @@ void GPIOF_Handler(){
     {
       GPIO_GetPinValue(GPIO_PORTF,PIN4,&val);
     }
+	  NVIC_ClearPendingFlag(30); // Manually clearing the flag
     //EEPROMsaving();
 }
 
