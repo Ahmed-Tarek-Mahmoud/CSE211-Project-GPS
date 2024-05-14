@@ -33,14 +33,15 @@
 void EEPROMsaving(void);
 void sysInit(void);
 void PC_Data(void);
-//void GPIOF_Handler(void);
+void GPIOF_Handler(void);
 
-float Lats[400];
-float Longs[400];
+double Lats[400];
+double Longs[400];
 uint16_t cnt =0;
-float DistAcc = 0;
-float vel=-1;
-	
+volatile double DistAcc = 0;
+volatile double vel=0;
+volatile double curLat = -1,curLong=-1,prevLat=-1,prevLong=-1;
+volatile double Latfinal = -1,Longfinal=-1;
 int main(void){
 
 	sysInit();
@@ -56,66 +57,53 @@ int main(void){
 	
 
     
-   /* uint8_t marker = 0;
+    uint8_t marker = 0;
     EEPROMRead(&marker , 0x0 , sizeof(marker));       // read the EEPROM marker
 
     if (marker == 1)
     {
       LCD_SendString("Connect UART");
       PC_Data();
-    }*/
+			
+    }
     
 
     UART_OutString("Enter 'Y' for final destination or 'N' for normal flow\n",UART7);
     char mode[2]={0};
     UART_getString(mode,2,UART7);
-    float Latfinal = -1,Longfinal=-1;
+   
     if (mode[0]=='Y')
     {   
         UART_OutString("Enter final latitude then enter the final longitude\n",UART7);
-        char * Latf;
-        char * Longf;
-        UART_getString(Latf , 8, UART7);
-        UART_getString(Longf , 8,UART7);
+        char * Latf = NULL;
+        char * Longf = NULL;
+        UART_getString(Latf , 12, UART7);
+        UART_getString(Longf , 12,UART7);
         Latfinal = atof(Latf);
         Longfinal = atof(Longf);
     }
-
     
-    float curLat = -1,curLong=-1,prevLat=-1,prevLong=-1;
-
     while (1)
     {    
-       while (GPS_ReceiveLog(&curLat , &curLong, &vel , UART7) != 1){ // Loop until valid log or velocity not equal zero
-				 	UART_OutString("main\n",UART7);
-			 }
-			 
-      if (prevLat == -1 && prevLong == -1)
-      {
-        prevLat = curLat;
-        prevLong = curLong;
-      }
-			char aaa[10]={0};
-			 sprintf(aaa, "%f", curLat-prevLat);
-			 char BBB[10]={0};
-			 sprintf(BBB, "%f", curLong-prevLong);
-			 char ccc[10]={0};
-			 
-			 UART_OutString("lat ",UART7);
-			 UART_OutString(aaa,UART7);
-			 UART_OutString("long ",UART7);
-			 UART_OutString(BBB,UART7);
-			 UART_OutString("\n",UART7);
-			 
-		  //Lats[cnt]=curLong;
-      //Longs[cnt]=curLat;		
+			
+				while (GPS_ReceiveLog(&curLat , &curLong, &vel , UART7) != 1){ // Loop until valid log or velocity not equal zero
+				}
+				
+			if(prevLat==-1 && prevLong==-1){
+			prevLat=curLat;
+			prevLong=curLong;
+			
+			}
+				
+			if((fabs(curLat - prevLat) <= 1e-4 && 	fabs(curLong - prevLong) <= 1e-4) || vel <=0.1)	continue;  
+		 
+			Lats[cnt]=curLong;
+      Longs[cnt]=curLat;	
+			
+			DistAcc = DistAcc + GPS_CalcDist(&curLat,&curLong,&prevLat,&prevLong);
       cnt=cnt+1;
-      DistAcc += GPS_CalcDist(curLat,curLong,prevLat,prevLong);
-			 float xx=DistAcc;
-			 sprintf(ccc, "%f",DistAcc);
-			UART_OutString("AccDistance:  ",UART7);
-			 UART_OutString(ccc,UART7);
-			 UART_OutString("\n",UART7);
+      
+			
       if (strcmp(mode,"Y") == 0 &&( fabs(curLat - Latfinal) <= 1e-6 ) && (fabs(curLong - Longfinal) <= 1e-6 ))
       {
         
@@ -131,12 +119,14 @@ int main(void){
       prevLat = curLat;
       prevLong = curLong;
       LCD_clear();
-      STK_Delay(1000);  
+      STK_Delay(500);  
       LCD_SendString("Distance: ");
       LCD_SendNumber(DistAcc);
       LCD_setCursor(1,0);
       LCD_SendString("Velocity: ");
       LCD_SendNumber(vel);
+      STK_Delay(2000); 
+			
     }
 		
     LEDx_On(RGB_RED);
@@ -145,20 +135,22 @@ int main(void){
     LCD_SendString("Distance: ");
     LCD_SendNumber(DistAcc);
     LCD_setCursor(1,0);
-    LCD_SendString("Velocity: ");
-    LCD_SendNumber(vel);
+   // LCD_SendString("Velocity: ");
+    //LCD_SendNumber(vel);
     STK_Delay(2000);
     LCD_clear();
     STK_Delay(1000);
-    LCD_SendString("Press SW1");
-    uint8_t val=1;
+    LEDx_On(RGB_RED);
+		//PC_Data();   // remove comment to send data to pc directly
+    
+		uint8_t val=1;
     GPIO_GetPinValue(GPIO_PORTF,PIN4,&val);
     while (val != 0 )
     {
       GPIO_GetPinValue(GPIO_PORTF,PIN4,&val);
     }
 		
-    //EEPROMsaving();
+    EEPROMsaving();
     
     while(1);
 }
@@ -169,20 +161,20 @@ void EEPROMsaving(void){
     uint8_t marker = 1;
     EEPROMProgram(&marker , 0x0 , sizeof(marker));    // write data int the EEPROM
 
- //   EEPROMProgram(Lats , 0x4 , sizeof(Lats));          // write Latitudes in the EEPROM
-  //  EEPROMProgram(Longs , 0x7D4 , sizeof(Longs));      // write Longitudes in the EEPROM
+    EEPROMProgram(Lats , 0x4 , sizeof(Lats));          // write Latitudes in the EEPROM
+    EEPROMProgram(Longs , 0x7D4 , sizeof(Longs));      // write Longitudes in the EEPROM
     LEDx_On(RGB_GREEN);
     while (1);  // program finished
        
 }
 
 void sysInit(){
-   // SysCtlClockSet(SYSCTL_SYSDIV_5|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|SYSCTL_OSC_MAIN);
-	 // SysCtlDelay(20000000);
-	 // SysCtlPeripheralEnable(SYSCTL_PERIPH_EEPROM0);
+    SysCtlClockSet(SYSCTL_SYSDIV_5|SYSCTL_USE_PLL|SYSCTL_XTAL_16MHZ|SYSCTL_OSC_MAIN);
+	  SysCtlDelay(20000000);
+	  SysCtlPeripheralEnable(SYSCTL_PERIPH_EEPROM0);
 
-   // EEPROMInit();
-   //  EEPROMMassErase();  // erases EEPROM ( factory reset )
+    EEPROMInit();
+     
 	  FPUEnable();
     STK_Init(16000);
     GPIO_Init(GPIO_PORTA);
@@ -202,28 +194,38 @@ void sysInit(){
 }
 
 void PC_Data(){
-  /*  char cmd[2] = {0};
-    UART_getString(cmd,2,UART5);
-    while (strcmp(cmd,"U") != 0)
+	  LCD_clear();
+    STK_Delay(100);
+	  LCD_SendString("Open Serial");
+    char cmd[2] = {0};
+		UART_OutString("Please enter 'U'\n",UART7);
+    UART_getString(cmd,2,UART7);
+    while ( cmd[0] != 'U')
     {
-      UART_OutString("Please enter 'U'\n",UART5);
-      UART_getString(cmd,2,UART5);
+      UART_OutString("Please enter 'U'\n",UART7);
+      UART_getString(cmd,2,UART7);
     }
 
     EEPROMRead(Lats , 0x4 , sizeof(Lats));           // read the EEPROM marker
     EEPROMRead(Longs , 0x7D4 , sizeof(Longs));       // read the EEPROM marker
-    char * sss;
-    UART_OutString("Lats   Longs\n",UART5);
+    char sss[10]={0};
+    UART_OutString("Lats   Longs\n",UART7);
 		uint8_t i;
-    for (i = 0; i < 400; i++)
+    for (i = 0; i < 17; i++)
     {
        sprintf(sss,"%f",Lats[i]);
-       UART_OutString(sss,UART5);
-       UART_OutString("   ",UART5);
+       UART_OutString(sss,UART7);
+       UART_OutString("   ",UART7);
        sprintf(sss,"%f",Longs[i]);
-       UART_OutString(sss,UART5);
+       UART_OutString(sss,UART7);
+			UART_OutString("\n",UART7);
     } 
-*/
+    EEPROMMassErase();  // erases EEPROM ( factory reset )
+		UART_OutString("END",UART7);
+		LCD_clear();
+		STK_Delay(100);
+	  LCD_SendString("Success");
+		while(1);
     
 }
 
@@ -235,8 +237,8 @@ void GPIOF_Handler(){
     LCD_SendString("Distance: ");
     LCD_SendNumber(DistAcc);
     LCD_setCursor(1,0);
-    LCD_SendString("Velocity: ");
-    LCD_SendNumber(vel);
+   // LCD_SendString("Velocity: ");
+    //LCD_SendNumber(vel);
     STK_Delay(2000);
     LCD_clear();
     STK_Delay(200);
@@ -248,7 +250,9 @@ void GPIOF_Handler(){
       GPIO_GetPinValue(GPIO_PORTF,PIN4,&val);
     }
 	  NVIC_ClearPendingFlag(30); // Manually clearing the flag
-    //EEPROMsaving();
+    LEDx_On(RGB_GREEN);
+		PC_Data();
+		EEPROMsaving();
 }
 
 
