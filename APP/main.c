@@ -104,7 +104,7 @@ int main(void){
       cnt=cnt+1;
       
 			
-      if (strcmp(mode,"Y") == 0 &&( fabs(curLat - Latfinal) <= 1e-6 ) && (fabs(curLong - Longfinal) <= 1e-6 ))
+      if (strcmp(mode,"Y") == 0 &&( fabs(curLat - Latfinal) <= 1e-4 ) && (fabs(curLong - Longfinal) <= 1e-4 ))
       {
         
         break;
@@ -140,7 +140,6 @@ int main(void){
     STK_Delay(2000);
     LCD_clear();
     STK_Delay(1000);
-    LEDx_On(RGB_RED);
 		//PC_Data();   // remove comment to send data to pc directly
     
 		uint8_t val=1;
@@ -211,8 +210,13 @@ void PC_Data(){
     char sss[10]={0};
     UART_OutString("Lats   Longs\n",UART7);
 		uint8_t i;
-    for (i = 0; i < 17; i++)
+    for (i = 0; i < 400; i++)
     {
+      if (Lats[i] == 0 && Longs[i] == 0)
+      {
+        break;
+      }
+      
        sprintf(sss,"%f",Lats[i]);
        UART_OutString(sss,UART7);
        UART_OutString("   ",UART7);
@@ -237,7 +241,7 @@ void GPIOF_Handler(){
     LCD_SendString("Distance: ");
     LCD_SendNumber(DistAcc);
     LCD_setCursor(1,0);
-   // LCD_SendString("Velocity: ");
+    //LCD_SendString("Velocity: ");
     //LCD_SendNumber(vel);
     STK_Delay(2000);
     LCD_clear();
@@ -250,9 +254,8 @@ void GPIOF_Handler(){
       GPIO_GetPinValue(GPIO_PORTF,PIN4,&val);
     }
 	  NVIC_ClearPendingFlag(30); // Manually clearing the flag
-    LEDx_On(RGB_GREEN);
-		PC_Data();
 		EEPROMsaving();
+    //PC_Data(); remove to send data directly
 }
 
 

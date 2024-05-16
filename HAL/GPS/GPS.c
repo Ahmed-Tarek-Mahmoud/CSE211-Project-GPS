@@ -50,13 +50,11 @@ uint8_t GPS_ReceiveLog(float *LatReturn, float *LongReturn , float *VelocityRetu
         if (c == ReqLog[i]) 
         {
             i++;
-					UART_OutString("do1\n",UART7);
 					
         }
         else 
         {
 					i=0;
-					//UART_OutString("do2\n",UART7);
         }
     }while (i!=7); 
 
@@ -84,17 +82,14 @@ uint8_t GPS_LogParsing(char *RecievedSentence,float *LatReturn, float *LongRetur
     char *token; //Array to store tokens 
 
     token = strtok(RecievedSentence,delimiter);
-    //token = strtok(NULL,delimiter);
     while (token != NULL)
     {
       storedData[i++] = token; //stored data is an array of strings
       token = strtok(NULL,delimiter);
-			//UART_OutString("do3\n",UART7);
     }
 
     if (storedData[1][0]=='A')
     {
-			UART_OutString("GOOD",UART7);
 
         if (storedData[3][0]=='N')
         {
@@ -121,16 +116,10 @@ uint8_t GPS_LogParsing(char *RecievedSentence,float *LatReturn, float *LongRetur
     }
     else if (storedData[1][0]=='V')
     {
-		 UART_OutString("BAD",UART7);
-			//memset(storedData,0,12);
+		 
         return NotValid;
     }
-		UART_OutString("NEITHER   ",UART7);
-			UART_OutString(storedData[0],UART7);
-		UART_OutString(storedData[1],UART7);
-			UART_OutString(storedData[2],UART7);
-	//	memset(storedData,0,12);
-    //return NotValid by default 
+		
     return NotValid;
 
 }
@@ -144,8 +133,6 @@ float GPS_ToDegree(float decimal){
 }
 
 float GPS_ToRadian(float degree){
-	
-		UART_OutString("hhhh\n",UART7);
 
     return ( degree * (PI /180.0) );
 }
@@ -154,19 +141,18 @@ float GPS_CalcDist(float LatA , float LongA , float LatB , float LongB){
 		  
     //Rad Angles
     float RadLatA ;
-		RadLatA =  GPS_ToRadian( (LatA) );
+		RadLatA =  GPS_ToRadian( GPS_ToDegree(LatA) );
     float RadLongA;
-	  RadLongA =   GPS_ToRadian( (LongA) );
+	  RadLongA =   GPS_ToRadian( GPS_ToDegree(LongA) );
     float RadLatB ;
-		RadLatB = GPS_ToRadian( (LatB) );
+		RadLatB = GPS_ToRadian( GPS_ToDegree(LatB) );
     float RadLongB;
-		RadLongB =  GPS_ToRadian( (LongB) );
+		RadLongB =  GPS_ToRadian( GPS_ToDegree(LongB) );
     //Difference
     float LatDiff = fabs(RadLatB - RadLatA) ; 
-     float LongDiff = fabs(RadLongB - RadLongA) ; 
+    float LongDiff = fabs(RadLongB - RadLongA) ; 
 
     //Distance Calculation (Haversine Formula)
-	char aaa[10] = {0};
 
     float  a = pow(sin((LatDiff)/2) , 2) + (cos(RadLatA) * cos(RadLatB)) * pow(sin((LongDiff)/2) , 2);
 	
@@ -174,7 +160,6 @@ float GPS_CalcDist(float LatA , float LongA , float LatB , float LongB){
 		
 		float dd = (EarthRadius * c);
 
-		UART_OutString("\nhamada\n",UART7);
     return dd;
 }
 
